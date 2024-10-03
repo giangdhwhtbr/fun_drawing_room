@@ -1,0 +1,48 @@
+services:
+  auth_service:
+    build:
+      context: .
+      dockerfile: ./backend/apps/auth/Dockerfile
+      target: development
+    command: pnpm run start:dev auth
+    # command: tail -f /dev/null
+    env_file:
+      - ./backend/apps/auth/.env.docker
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./backend/apps/auth:/usr/src/app/auth
+      - ./backend/libs:/usr/src/app/libs
+
+  notifications_service:
+    build:
+      context: .
+      dockerfile: ./backend/apps/notifications/Dockerfile
+      target: development
+    command: pnpm run start:dev notifications
+    # command: tail -f /dev/null
+    env_file:
+      - ./backend/apps/notifications/.env.docker
+    volumes:
+      - ./backend/apps/notifications:/usr/src/app/notifications
+      - ./backend/libs:/usr/src/notifications/libs
+
+  postgres:
+    image: postgres:15
+    ports:
+      - '5434:5432'
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/init-auth_service-db.sh:/docker-entrypoint-initdb.d/init-auth_service-db.sh
+
+  redis:
+    restart: always
+    image: redis:alpine
+    ports:
+      - 6380:6379
+
+volumes:
+  postgres_data:

@@ -1,0 +1,6 @@
+[submodule "backend"]
+	path = backend
+	url = https://github.com/giangdhwhtbr/fun_drawing_room_be.git
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/giangdhwhtbr/fun_drawing_room_fe.git
