@@ -32,6 +32,8 @@ services:
       target: development
     command: pnpm run start:dev notifications
     # command: tail -f /dev/null
+    ports:
+      - 3002:3002
     env_file:
       - ./backend/apps/notifications/.env.docker
     volumes:
@@ -58,6 +60,7 @@ services:
       - auth_service
       - rooms_service
       - frontend_service
+      - notifications_service
 
   postgres:
     image: postgres:15
